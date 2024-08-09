@@ -1,3 +1,4 @@
+import asyncio
 import discord
 import os
 import datetime
@@ -11,7 +12,7 @@ from utils import tasks
 from constants import AUTO_UPDATE_TIME
 
 intents = discord.Intents.default()
-intents.members = False
+intents.message_content = True
 client = Bot(case_insensitive=True, description="Lockout Bot", command_prefix=when_mentioned_or("."), intents=intents)
 
 logging_channel = None
@@ -41,6 +42,7 @@ async def update():
 @client.event
 async def on_command_error(ctx: discord.ext.commands.Context, error: Exception):
     if isinstance(error, CommandNotFound):
+        print('CNF')
         pass
 
     elif isinstance(error, CommandOnCooldown):
@@ -80,14 +82,13 @@ async def on_command_error(ctx: discord.ext.commands.Context, error: Exception):
         await logging_channel.send(desc)
 
 
-if __name__ == "__main__":
-    for filename in os.listdir('./cogs'):
-        if filename.endswith('.py'):
-            try:
-                client.load_extension(f'cogs.{filename[:-3]}')
-            except Exception as e:
-                print(f'Failed to load file {filename}: {str(e)}')
-                print(str(e))
-
+async def main():
     token = os.environ.get('LOCKOUT_BOT_TOKEN')
-    client.run(token)
+    async with client:
+        for filename in os.listdir('./cogs'):
+            if filename.endswith('.py'):
+                await client.load_extension(f'cogs.{filename[:-3]}')
+        await client.start(token)
+    
+if __name__ == "__main__":
+    asyncio.run(main())

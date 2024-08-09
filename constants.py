@@ -5,7 +5,7 @@ BOT_INVITE = "https://discord.com/oauth2/authorize?client_id=669978762120790045&
 GITHUB_LINK = "https://github.com/pseudocoder10/Lockout-Bot"
 
 ADMIN_PRIVILEGE_ROLES = ['Admin', 'Moderator', 'Lockout Manager']
-OWNERS = [515920333623263252]
+OWNERS = [664130165680504843]
 
 BACKUP_DIR = "./data/backup/"
 

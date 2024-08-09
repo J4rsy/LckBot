@@ -1,5 +1,6 @@
 import aiohttp
 import asyncio
+import traceback
 
 from collections import namedtuple
 
@@ -28,6 +29,7 @@ class CodeforcesAPI:
                             return response
                 return response
         except Exception as e:
+            print(traceback.format_exc())
             return None
 
     async def check_handle(self, handle):
